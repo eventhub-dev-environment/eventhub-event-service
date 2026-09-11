@@ -9,7 +9,7 @@ spring:
 
 # Valor por defecto para pruebas locales si no existe la variable de entorno
 gateway:
-  internal-secret: ${GATEWAY_INTERNAL_SECRET:EventHubInternalSecretKey2026!}
+  internal-secret: ${GATEWAY_INTERNAL_SECRET}
 
 management:
   endpoints:
