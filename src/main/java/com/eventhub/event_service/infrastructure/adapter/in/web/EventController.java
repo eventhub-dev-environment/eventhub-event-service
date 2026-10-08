@@ -32,6 +32,7 @@ public class EventController {
                 .location(request.getLocation())
                 .status(request.getStatus())
                 .ticketTiers(request.getTicketTiers())
+                .branding(request.getBranding()) // <--- Asignar Branding del Request
                 .build();
 
         Event created = createEventUseCase.createEvent(event);

@@ -1,5 +1,6 @@
 package com.eventhub.event_service.infrastructure.adapter.out.persistence.entity;
 
+import com.eventhub.event_service.domain.model.EventBranding;
 import com.eventhub.event_service.domain.model.EventStatus;
 import com.eventhub.event_service.domain.model.TicketTier;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class EventDocument {
     private String location;
     private EventStatus status;
     private List<TicketTier> ticketTiers;
+    private EventBranding branding; // <--- Se mapea automáticamente como subdocumento Mongo
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
