@@ -59,6 +59,7 @@ public class EventMongoAdapter implements EventRepositoryPort {
                 .location(domain.getLocation())
                 .status(domain.getStatus())
                 .ticketTiers(domain.getTicketTiers())
+                .branding(domain.getBranding()) // Mapeo a Document
                 .createdAt(domain.getCreatedAt())
                 .updatedAt(domain.getUpdatedAt())
                 .build();
@@ -75,6 +76,7 @@ public class EventMongoAdapter implements EventRepositoryPort {
                 .location(doc.getLocation())
                 .status(doc.getStatus())
                 .ticketTiers(doc.getTicketTiers())
+                .branding(doc.getBranding()) // Mapeo a Domain
                 .createdAt(doc.getCreatedAt())
                 .updatedAt(doc.getUpdatedAt())
                 .build();

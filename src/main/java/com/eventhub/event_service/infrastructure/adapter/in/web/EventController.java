@@ -1,15 +1,20 @@
 package com.eventhub.event_service.infrastructure.adapter.in.web;
 
+import com.eventhub.event_service.application.usecase.UpdateEventLogoUseCase;
 import com.eventhub.event_service.domain.model.Event;
 import com.eventhub.event_service.domain.port.in.CreateEventUseCase;
 import com.eventhub.event_service.domain.port.in.GetEventUseCase;
 import com.eventhub.event_service.infrastructure.adapter.in.web.dto.ApiResponse;
 import com.eventhub.event_service.infrastructure.adapter.in.web.dto.CreateEventRequest;
+import com.eventhub.event_service.infrastructure.adapter.out.storage.S3StorageAdapter;
+import com.eventhub.event_service.application.usecase.UpdateEventBannerUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +25,9 @@ public class EventController {
 
     private final CreateEventUseCase createEventUseCase;
     private final GetEventUseCase getEventUseCase;
+    private final S3StorageAdapter s3StorageAdapter;
+    private final UpdateEventLogoUseCase updateEventLogoUseCase;
+    private final UpdateEventBannerUseCase updateEventBannerUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Event>> createEvent(@Valid @RequestBody CreateEventRequest request) {
@@ -32,6 +40,7 @@ public class EventController {
                 .location(request.getLocation())
                 .status(request.getStatus())
                 .ticketTiers(request.getTicketTiers())
+                .branding(request.getBranding())
                 .build();
 
         Event created = createEventUseCase.createEvent(event);
@@ -57,5 +66,33 @@ public class EventController {
     public ResponseEntity<ApiResponse<List<Event>>> getEventsByTenant(@PathVariable String tenantId) {
         List<Event> events = getEventUseCase.getAllByTenant(tenantId);
         return ResponseEntity.ok(ApiResponse.success(events, "Eventos del tenant recuperados exitosamente"));
+    }
+
+    @PostMapping(value = "/{id}/branding/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<Event>> uploadEventLogo(
+            @PathVariable String id,
+            @RequestParam("file") MultipartFile file
+    ) {
+        // 1. Almacenar la imagen en MinIO en la carpeta 'logos'
+        String logoUrl = s3StorageAdapter.uploadFile(file, "logos");
+
+        // 2. Asociar la URL pública generada a la entidad del Evento
+        Event updatedEvent = updateEventLogoUseCase.execute(id, logoUrl);
+
+        return ResponseEntity.ok(ApiResponse.success(updatedEvent, "Logo del evento actualizado exitosamente"));
+    }
+
+    @PostMapping(value = "/{id}/branding/banner", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<Event>> uploadEventBanner(
+            @PathVariable String id,
+            @RequestParam("file") MultipartFile file
+    ) {
+        // 1. Almacenar el banner en AWS S3 en la carpeta 'banners'
+        String bannerUrl = s3StorageAdapter.uploadFile(file, "banners");
+
+        // 2. Asociar la URL a la entidad del Evento
+        Event updatedEvent = updateEventBannerUseCase.execute(id, bannerUrl);
+
+        return ResponseEntity.ok(ApiResponse.success(updatedEvent, "Banner del evento actualizado exitosamente"));
     }
 }

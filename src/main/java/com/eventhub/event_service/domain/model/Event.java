@@ -22,6 +22,7 @@ public class Event {
     private String location;    // Ciudad / Dirección o recinto
     private EventStatus status;
     private List<TicketTier> ticketTiers;
+    private EventBranding branding; // <--- Nuevo campo para Multi-Tenant Branding
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

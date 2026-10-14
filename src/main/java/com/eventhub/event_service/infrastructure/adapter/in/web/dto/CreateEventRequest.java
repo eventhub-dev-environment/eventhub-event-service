@@ -1,5 +1,6 @@
 package com.eventhub.event_service.infrastructure.adapter.in.web.dto;
 
+import com.eventhub.event_service.domain.model.EventBranding;
 import com.eventhub.event_service.domain.model.EventStatus;
 import com.eventhub.event_service.domain.model.TicketTier;
 import jakarta.validation.constraints.Future;
@@ -36,4 +37,6 @@ public class CreateEventRequest {
 
     @NotEmpty(message = "Debe definir al menos un tipo de boletería / tarifa")
     private List<TicketTier> ticketTiers;
+
+    private EventBranding branding;
 }
