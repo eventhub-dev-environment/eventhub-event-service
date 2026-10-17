@@ -18,9 +18,13 @@ import java.util.List;
 public class CategoryController {
 
     private final ManageCategoryUseCase manageCategoryUseCase;
+    private final EventAccessPolicy accessPolicy;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Category>> createCategory(@Valid @RequestBody CreateCategoryRequest request) {
+    public ResponseEntity<ApiResponse<Category>> createCategory(
+            @Valid @RequestBody CreateCategoryRequest request,
+            @RequestHeader("X-User-Roles") String userRoles) {
+        accessPolicy.requirePlatformAdmin(userRoles);
         Category category = Category.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -47,7 +51,11 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Category>> updateCategory(@PathVariable String id, @Valid @RequestBody CreateCategoryRequest request) {
+    public ResponseEntity<ApiResponse<Category>> updateCategory(
+            @PathVariable String id,
+            @Valid @RequestBody CreateCategoryRequest request,
+            @RequestHeader("X-User-Roles") String userRoles) {
+        accessPolicy.requirePlatformAdmin(userRoles);
         Category category = Category.builder()
                 .name(request.getName())
                 .description(request.getDescription())

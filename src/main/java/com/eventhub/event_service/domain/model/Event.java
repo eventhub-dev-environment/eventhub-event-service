@@ -15,6 +15,7 @@ import java.util.List;
 public class Event {
     private String id;
     private String tenantId;    // Identificador del organizador / empresa
+    private String eventType;
     private String title;
     private String description;
     private String categoryId;
@@ -22,6 +23,8 @@ public class Event {
     private String location;    // Ciudad / Dirección o recinto
     private EventStatus status;
     private List<TicketTier> ticketTiers;
+    private List<EventSession> sessions;
+    private List<RegistrationField> registrationFields;
     private EventBranding branding; // <--- Nuevo campo para Multi-Tenant Branding
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

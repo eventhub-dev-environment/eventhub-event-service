@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
@@ -16,5 +17,6 @@ public class TicketTier {
     private String name;        // Ej: General, VIP, Preferencial
     private BigDecimal price;
     private Integer capacity;
-    private Integer available;
+    private InventoryMode inventoryMode;
+    private List<SeatDefinition> seats;
 }

@@ -17,7 +17,6 @@ env:
   DOCKER_IMAGE_NAME: ${{ github.event.repository.name }}
 
 jobs:
-  # 1. Compilación Java 21 y Pruebas Unitarias
   build-and-test:
     name: Build & Test (Java 21)
     runs-on: ubuntu-24.04
@@ -39,7 +38,6 @@ jobs:
       - name: Compilar y verificar pruebas
         run: ./gradlew build -x test
 
-  # 2. Construcción y Publicación de la Imagen Docker
   docker-build-push:
     name: Build & Push Docker Image
     needs: build-and-test
