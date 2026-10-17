@@ -15,7 +15,7 @@ Each ticket tier has a fixed `capacity` and an `inventoryMode`:
 - `GENERAL_ADMISSION` represents a capacity-only pool.
 - `RESERVED_SEATING` includes a list of stable `seatId`, section, row, and number definitions; its capacity is derived from or must match the seat count.
 
-Per-event `registrationFields` define participant data using `key`, `label`, `type` (`TEXT`, `NUMBER`, `ENUM`, or `BOOLEAN`), `required`, and optional `options` for `ENUM`. These definitions allow event-specific questions without hard-coding requirements for individual verticals.
+Per-event `registrationFields` define participant data using `key`, `label`, `type` (`TEXT`, `NUMBER`, `ENUM`, or `BOOLEAN`), `required`, and optional `options` for `ENUM`. Booking Service validates one attendee map per ticket against these definitions, including required fields and allowed types/enum values, without hard-coding requirements for individual event verticals.
 
 Event Service owns the event/session/tier/seat-map definitions. Booking Service owns mutable availability, seat states, and holds; its relational inventory tables are the source of truth for stock. Availability and atomic holds are introduced in the following phase. The legacy tier `available` value is no longer returned or maintained by Event Service because it was not a reliable stock source.
 
