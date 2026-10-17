@@ -16,9 +16,11 @@ import java.util.Optional;
 public class EventService implements CreateEventUseCase, GetEventUseCase {
 
     private final EventRepositoryPort eventRepositoryPort;
+    private final EventConfigurationValidator configurationValidator;
 
     @Override
     public Event createEvent(Event event) {
+        configurationValidator.normalizeAndValidate(event);
         if (event.getStatus() == null) {
             event.setStatus(EventStatus.DRAFT);
         }

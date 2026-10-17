@@ -1,12 +1,14 @@
 package com.eventhub.event_service.infrastructure.adapter.in.web.dto;
 
 import com.eventhub.event_service.domain.model.EventBranding;
+import com.eventhub.event_service.domain.model.EventSession;
 import com.eventhub.event_service.domain.model.EventStatus;
+import com.eventhub.event_service.domain.model.RegistrationField;
 import com.eventhub.event_service.domain.model.TicketTier;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -23,7 +25,6 @@ public class CreateEventRequest {
     @NotBlank(message = "La categoría es obligatoria")
     private String categoryId;
 
-    @NotNull(message = "La fecha del evento es obligatoria")
     @Future(message = "La fecha del evento debe ser posterior a la fecha actual")
     private LocalDateTime eventDate;
 
@@ -32,8 +33,17 @@ public class CreateEventRequest {
 
     private EventStatus status;
 
-    @NotEmpty(message = "Debe definir al menos un tipo de boletería / tarifa")
+    @Valid
     private List<TicketTier> ticketTiers;
+
+    @Size(max = 50, message = "El tipo de evento no puede superar 50 caracteres")
+    private String eventType;
+
+    @Valid
+    private List<EventSession> sessions;
+
+    @Valid
+    private List<RegistrationField> registrationFields;
 
     private EventBranding branding;
 }

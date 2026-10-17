@@ -40,6 +40,7 @@ public class EventController {
         accessPolicy.requireTenantStaff(tenantId, tenantId, tenantRoles, userRoles);
         Event event = Event.builder()
                 .tenantId(tenantId)
+                .eventType(request.getEventType())
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .categoryId(request.getCategoryId())
@@ -47,6 +48,8 @@ public class EventController {
                 .location(request.getLocation())
                 .status(request.getStatus())
                 .ticketTiers(request.getTicketTiers())
+                .sessions(request.getSessions())
+                .registrationFields(request.getRegistrationFields())
                 .branding(request.getBranding())
                 .build();
 
