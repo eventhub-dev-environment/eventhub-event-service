@@ -15,9 +15,6 @@ import java.util.List;
 @Data
 public class CreateEventRequest {
 
-    @NotBlank(message = "El tenantId es obligatorio")
-    private String tenantId;
-
     @NotBlank(message = "El título del evento es obligatorio")
     private String title;
 
